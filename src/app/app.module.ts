@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
-
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
@@ -14,30 +13,34 @@ import { ServerComponent } from './servers/server/server.component';
 import { ServersService } from './servers/servers.service';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'servers', component: ServersComponent },
-  { path: 'servers/:id/edit', component: EditServerComponent },
-  { path: 'users', component: UsersComponent },
-  { path: 'users/:id/:name', component: UserComponent }
-
+    { path: '', component: HomeComponent },
+    {
+        path: 'servers',
+        component: ServersComponent,
+        children: [
+            { path: ':id', component: ServerComponent },
+            { path: ':id/edit', component: EditServerComponent }
+        ]
+    },
+    {
+        path: 'users',
+        component: UsersComponent,
+        children: [{ path: ':id/:name', component: UserComponent }]
+    }
 ];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    UsersComponent,
-    ServersComponent,
-    UserComponent,
-    EditServerComponent,
-    ServerComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    RouterModule.forRoot(appRoutes)
-  ],
-  providers: [ServersService],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        UsersComponent,
+        ServersComponent,
+        UserComponent,
+        EditServerComponent,
+        ServerComponent
+    ],
+    imports: [BrowserModule, FormsModule, RouterModule.forRoot(appRoutes)],
+    providers: [ServersService],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
